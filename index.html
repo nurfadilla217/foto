@@ -1,197 +1,38 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>MoneyMate</title>
-  <style>
-    body { font-family: 'Arial', sans-serif; background: #f4f6f9; margin: 0; }
-    header { background: #2c3e50; color: white; padding: 40px 20px; text-align: center; }
-    header h1 { margin: 0; font-size: 36px; }
-    header p { margin: 5px 0 0; color: #dcdfe3; }
-
-    .container { max-width: 1000px; margin: 30px auto; padding: 20px; text-align: center; }
-    .grid { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .card-menu { background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 30px; width: 240px; cursor: pointer; transition: transform 0.3s ease; text-decoration: none; color: black; }
-    .card-menu:hover { transform: translateY(-5px); }
-    .hidden { display: none; }
-
-    .card { background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 20px; margin: 20px auto; text-align: left; max-width: 700px; }
-    h2 { color: #2c3e50; }
-
-    input, select, button { padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin: 5px; }
-    button { background: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; }
-    button:hover { background: #219150; }
-
-    .result { background: #eafaf1; border-left: 5px solid #27ae60; padding: 15px; margin-top: 15px; }
-    .back-btn { margin: 20px auto; display: block; background: #34495e; }
-
-    @media (max-width: 600px){
-      .card { width: 95%; padding: 15px; }
-    }
-  </style>
+    <title>Website Saya</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f0f0f0;
+            padding: 50px;
+        }
+        .foto-saya {
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>MoneyMate</h1>
-    <p>Your Personal Financial Assistant</p>
-  </header>
-
-  <!-- Halaman Utama -->
-  <div class="container" id="home">
-    <div class="grid">
-      <div class="card-menu" onclick="showPage('split')"><h3>🧾 Split Bill</h3></div>
-      <div class="card-menu" onclick="showPage('finance')"><h3>💵 Pemasukan & Pengeluaran</h3></div>
-      <div class="card-menu" onclick="showPage('about')"><h3>ℹ️ About</h3></div>
+    <div class="container">
+        <h1>Website Pertama Saya! 🎉</h1>
+        <p>Ini foto saya yang dihosting di GitHub:</p>
+        
+        <!-- GANTI "foto-saya.jpg" DENGAN NAMA FILE FOTO KAMU -->
+        <img src="images/fotoku.jpg" alt="Foto Saya" class="foto-saya">
+        <img src="images/roblox.jpg" alt="Foto Saya" class="foto-saya">
+        
+        <p>✅ Berhasil! Foto sudah online!</p>
     </div>
-  </div>
-
-  <!-- Split Bill -->
-  <div id="page-split" class="hidden">
-    <div class="card">
-      <h2>1. Tambah Teman</h2>
-      <input type="text" id="friendInput" placeholder="Nama teman">
-      <button onclick="addFriend()">Tambah</button>
-      <ul id="friendList"></ul>
-    </div>
-    <div class="card">
-      <h2>2. Tambah Item Struk</h2>
-      <input type="text" id="itemName" placeholder="Nama item">
-      <input type="number" id="itemQty" placeholder="Jumlah">
-      <input type="text" id="itemPrice" placeholder="Harga per item" oninput="formatInput(this)">
-      <button onclick="addItem()">Tambah Item</button>
-      <div id="itemList"></div>
-    </div>
-    <div class="card">
-      <h2>3. Pajak, Service & Diskon</h2>
-      Pajak (%) <input type="number" id="tax" value="10"><br><br>
-      Service (%) <input type="number" id="service" value="5"><br><br>
-      Diskon (%) <input type="number" id="discount" value="0">
-    </div>
-    <div class="card">
-      <button onclick="calculateSplit()">Hitung Split Bill</button>
-      <div id="result" class="result"></div>
-    </div>
-    <button class="back-btn" onclick="backHome()">⬅ Kembali</button>
-  </div>
-
-  <!-- Pemasukan & Pengeluaran -->
-  <div id="page-finance" class="hidden">
-    <div class="card">
-      <h2>💵 Catat Pemasukan & Pengeluaran</h2>
-      <input type="date" id="date">
-      <input type="text" id="desc" placeholder="Deskripsi">
-      <input type="text" id="amount" placeholder="Jumlah (Rp)" oninput="formatInput(this)">
-      <select id="type"><option value="in">Pemasukan</option><option value="out">Pengeluaran</option></select>
-      <button onclick="addFinance()">Tambah</button>
-      <button onclick="downloadFinanceCSV()">💾 Simpan ke CSV</button>
-    </div>
-    <div class="card">
-      <h3>📊 Ringkasan</h3>
-      <ul id="financeList"></ul>
-      <p id="balance"><b>Total Saldo:</b> Rp0</p>
-    </div>
-    <button class="back-btn" onclick="backHome()">⬅ Kembali</button>
-  </div>
-
-  <!-- About -->
-  <div id="page-about" class="hidden">
-    <div class="card">
-      <h2>ℹ️ Tentang MoneyMate</h2>
-      <p style="text-align: justify;">
-        MoneyMate adalah asisten keuangan sederhana yang dirancang untuk membantu kamu mengatur keuangan sehari-hari.  
-        Dengan fitur split bill, pencatatan pemasukan dan pengeluaran, hingga ringkasan saldo,  
-        MoneyMate hadir untuk membuat pengelolaan uang jadi lebih mudah, adil, dan transparan.  
-        Semua catatanmu tersimpan otomatis di perangkatmu agar tetap aman.
-      </p>
-    </div>
-    <button class="back-btn" onclick="backHome()">⬅ Kembali</button>
-  </div>
-
-<script>
-  // Navigasi
-  function showPage(page){
-    ["home","page-split","page-finance","page-about"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-    document.getElementById("page-"+page).classList.remove("hidden");
-  }
-  function backHome(){
-    ["page-split","page-finance","page-about"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-    document.getElementById("home").classList.remove("hidden");
-  }
-
-  // Format angka
-  const formatRupiah=n=>"Rp"+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
-  const formatInput=el=>el.value=el.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
-  const parseNumber=str=>parseInt(str.replace(/\./g,""))||0;
-
-  // Split Bill
-  let friends=[], items=[];
-  function addFriend(){const name=document.getElementById("friendInput").value.trim();
-    if(name&&!friends.includes(name)){friends.push(name); document.getElementById("friendInput").value=""; renderFriends(); renderItems();}}
-  const renderFriends=()=>document.getElementById("friendList").innerHTML=friends.map(f=>`<li>${f}</li>`).join("");
-  function addItem(){const name=document.getElementById("itemName").value.trim();
-    const qty=parseInt(document.getElementById("itemQty").value);
-    const price=parseNumber(document.getElementById("itemPrice").value);
-    if(name&&qty>0&&price>0){items.push({name,qty,price,buyers:[]});
-      ["itemName","itemQty","itemPrice"].forEach(id=>document.getElementById(id).value="");
-      renderItems();}}
-  function renderItems(){const itemList=document.getElementById("itemList"); itemList.innerHTML="";
-    items.forEach((item,i)=>{let checks=friends.map(f=>`<label><input type="checkbox" onchange="toggleBuyer(${i},'${f}')" ${item.buyers.includes(f)?"checked":""}> ${f}</label>`).join(" ");
-      itemList.innerHTML+=`<div>${item.qty} x ${item.name} (${formatRupiah(item.price)})<br>Dibeli oleh: ${checks}</div>`;});}
-  const toggleBuyer=(i,f)=>{let it=items[i]; it.buyers=it.buyers.includes(f)?it.buyers.filter(x=>x!==f):[...it.buyers,f];};
-  function calculateSplit(){
-    let subtotal=0,bills={}; friends.forEach(f=>bills[f]=0);
-    items.forEach(it=>{let total=it.qty*it.price; subtotal+=total; if(it.buyers.length){let share=total/it.buyers.length; it.buyers.forEach(b=>bills[b]+=share);}});
-    const tax=(document.getElementById("tax").value/100)*subtotal;
-    const service=(document.getElementById("service").value/100)*subtotal;
-    const discount=(document.getElementById("discount").value/100)*subtotal;
-    let total=subtotal+tax+service-discount;
-    let res=`<h3>💸 Hasil Split Bill</h3>Subtotal: ${formatRupiah(subtotal)}<br>Pajak: ${formatRupiah(tax)}, Service: ${formatRupiah(service)}, Diskon: ${formatRupiah(discount)}<br><b>Total: ${formatRupiah(total)}</b><br><br>`;
-    for(const [f,a] of Object.entries(bills)){res+=`${f}: ${formatRupiah(Math.round(a+(a/subtotal)*(tax+service-discount)))}<br>`;}
-    document.getElementById("result").innerHTML=res;
-  }
-
-  // Finance
-  let finance=JSON.parse(localStorage.getItem("financeData"))||[];
-  function addFinance(){
-    const date=document.getElementById("date").value;
-    const desc=document.getElementById("desc").value.trim();
-    const amount=parseNumber(document.getElementById("amount").value);
-    const type=document.getElementById("type").value;
-    if(!date||!desc||!amount){alert("Isi semua data!"); return;}
-    finance.push({date,desc,amount,type}); localStorage.setItem("financeData",JSON.stringify(finance));
-    ["date","desc","amount"].forEach(id=>document.getElementById(id).value=""); renderFinance();
-  }
-  function renderFinance(){
-    const list=document.getElementById("financeList"); list.innerHTML=""; let balance=0;
-    finance.forEach((f,i)=>{balance+=f.type==="in"?f.amount:-f.amount;
-      list.innerHTML+=`<li>${f.date} - ${f.desc}: ${f.type==="in"?"+":"-"}${formatRupiah(f.amount)} <button onclick="deleteFinance(${i})">❌</button></li>`;});
-    document.getElementById("balance").innerHTML=`<b>Total Saldo:</b> ${formatRupiah(balance)}`;
-  }
-  const deleteFinance=i=>{finance.splice(i,1); localStorage.setItem("financeData",JSON.stringify(finance)); renderFinance();}
-
-  function downloadFinanceCSV(){
-    if(finance.length===0){alert("Belum ada data!"); return;}
-    let balance=finance.reduce((acc,f)=>f.type==="in"?acc+f.amount:acc-f.amount,0);
-
-    const header=["Tanggal","Deskripsi","Jumlah","Jenis"];
-    const rows=finance.map(f=>[f.date, `"${f.desc.replace(/"/g,'""')}"`, f.amount, f.type==="in"?"Pemasukan":"Pengeluaran"].join(","));
-
-    // Tambahkan baris saldo terakhir
-    rows.push(`,,${balance},"Total Saldo"`);
-
-    const csvContent=[header.join(","), ...rows].join("\n");
-    const blob=new Blob([csvContent], {type:"text/csv"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;
-    a.download="finance-data.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  renderFinance();
-</script>
 </body>
 </html>
